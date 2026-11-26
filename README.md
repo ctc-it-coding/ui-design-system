@@ -1,58 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# @tinicorn/ui
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+React + TypeScript + Tailwind CSS v4 component library converted from the Tinicorn Figma design system
+(`ui-design-system.fig`, "PRO STYLES v4.0").
 
-## About Laravel
+> ไลบรารี React ที่แปลงมาจาก Figma design system ของ Tinicorn — Foundations (สี, ตัวอักษร, เงา, spacing),
+> ไอคอน 1,172 ตัว และ component ทั้งหมดในหมวด Shared components + Application components
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Quick start
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+npm install
+npm run dev        # showcase: every component, section and the 213 example pages at http://localhost:5173
+npm run build      # library build → dist/ (ESM + .d.ts)
+npm run typecheck
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Use in an app (Tailwind v4)
 
-## Contributing
+```css
+/* app.css */
+@import "tailwindcss";
+@import "@tinicorn/ui/theme.css";
+@source "../node_modules/@tinicorn/ui/src";
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```tsx
+import { Button, Input, Badge, Modal } from '@tinicorn/ui';
+import { Plus, Mail01 } from '@tinicorn/ui/icons';
 
-## Code of Conduct
+<Button hierarchy="primary" size="md" iconLeading={Plus}>New project</Button>
+<Input label="Email" iconLeading={Mail01} hint="We'll never share it." />
+<Badge color="success" type="pill-color" dot>Active</Badge>
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Load the **Inter** font (e.g. `https://rsms.me/inter/inter.css`) — the theme uses it as `font-sans`.
 
-## Security Vulnerabilities
+## What's inside
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Area | Contents |
+|---|---|
+| **Theme** `src/styles/theme.css` | 29 color palettes (25–950) incl. `brand` (#7f56d9), semantic colors, type scale `text-xs…text-xl`, `text-display-xs…2xl`, shadows `xs…3xl`, focus-ring utilities |
+| **Tokens** `src/tokens` | the same values as JS objects (`colors`, `fontSize`, `shadows`, `spacing`, `radius`) |
+| **Icons** `src/icons` | 1,172 line icons (24×24, 2px stroke, `currentColor`) — PascalCase of the Figma name: `chevron-down` → `ChevronDown`; `size`, `strokeWidth`, `title` props |
+| **Shared components** | Button, CloseButton, SocialButton, ButtonGroup, Badge, BadgeGroup, Tag, Input, Textarea, TagInput, VerificationCodeInput, Select, MultiSelect, DropdownMenu, Toggle, Checkbox, Radio, CheckboxGroup, RadioGroup, ChoiceCard, Avatar, AvatarGroup, AvatarLabelGroup, AvatarProfilePhoto, Tooltip, HelpIcon, ProgressBar, ProgressCircle, Slider, FeaturedIcon, SocialIcon, PaymentIcon, FileTypeIcon, Flag, StarIcon/RatingStars, CheckIcon |
+| **Application components** | PageHeader, CardHeader, SectionHeader, SectionLabel, SectionFooter, SidebarNavigation, HeaderNavigation, NavItem…, Modal (+ConfirmModal), CommandMenu, LineChart, BarChart, PieChart/DonutChart, ActivityGauge, RadarChart, MetricItem, SlideoutMenu, InlineCTA, Pagination, PaginationDots, CarouselImage, progress steps, ActivityFeed, Message, Tabs, VerticalTabs, Table/DataTable/TableCard, Breadcrumbs, Alert, Notification + `toast()`, Calendar, DatePicker, DateRangePicker, FileUpload, ContentDivider, LoadingIndicator, EmptyState, CodeSnippet |
 
-## License
+### Conventions
+* Props mirror Figma variant properties in kebab-case: `Hierarchy=Secondary gray` → `hierarchy="secondary-gray"`.
+  Where Figma uses "Style", the prop is `variant` (because `style` is reserved).
+* Hover / focus / disabled are CSS states, never props. Focus rings follow Figma: `ring-4 ring-brand-500/24`.
+* Stateful components support controlled and uncontrolled use (`value`/`defaultValue`/`onChange`, `open`/`defaultOpen`/`onOpenChange`).
+* No runtime dependencies besides `react`, `clsx`, `tailwind-merge`. Menus, modals, tabs, sliders etc. implement keyboard + ARIA themselves.
+* Breakpoint=Mobile variants are responsive classes on the same component.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Marketing sections — `@tinicorn/ui/marketing`
+
+Every set on the Figma "MARKETING WEBSITE COMPONENTS" pages, with **every Figma `Type`/`Theme` as a prop**. Every section renders the Figma copy when called with no props; pass your own content through props.
+
+```tsx
+import { MarketingHeaderNav, HeroHeaderSection, FeaturesSection, CTASection, MarketingFooter } from '@tinicorn/ui/marketing';
+
+<HeroHeaderSection type="split-image-03" nav={<MarketingHeaderNav variant="dropdown" />} title="Ship faster" />
+<FeaturesSection type="tabs-mockup-06" />
+<CTASection type="card-horizontal" theme="gray-light" />
+<MarketingFooter type="large-12" />
+```
+
+MarketingHeaderNav (14 menu types), MarketingBanner, SectionDivider, HeroHeaderSection (45 types), HeaderSection, FeaturesSection (42), MetricsSection, SocialProofSection, PressMentionsSection, PricingSection, PricingPageHeader, PricingTierCard, PricingTable, CTASection (24), NewsletterCTASection, TestimonialSection, BlogSection, BlogPageHeader, BlogPostCard, BlogPostPageHeader (with article body + TOC), ContentSection, ContentItem, ContactSection (20), ContactPageHeader, TeamSection, CareersSection, FAQSection, MarketingFooter (20 types) and their sub-parts.
+
+## Templates — `@tinicorn/ui/templates`
+* `LogIn` (17 layouts), `SignUp` (21 layouts incl. multi-step), `ForgotPassword`, `EmailVerification` — full screens with working forms.
+* `NotFoundSection` (14 types).
+* `EmailTemplate` (10 types) + `EmailHeader`/`EmailFooter` — table layout with inline styles so they work in email clients;
+  `renderEmailHtml()` from `@tinicorn/ui/templates/email/render` turns one into an HTML string.
+
+## Example pages — `@tinicorn/ui/pages` (213 pages)
+| Figma page | Components |
+|---|---|
+| Landing, Pricing, Blogs, Blog posts, About, Contact, Team, Legal, FAQ, Log in, Sign up, 404 | `LandingPage01…`, `PricingPage01…` … (113 pages, generated from the Figma composition) |
+| Dashboards 01 / 02 | `Dashboard01Page01…15`, `Dashboard02Page01…15` |
+| Settings pages 01 / 02 | `Settings01Page01…20`, `Settings02Page01…20` |
+| Informational pages 01 / 02 | `Informational01Page01…15`, `Informational02Page01…15` |
+
+Each entry also exports a list (`marketingPageList`, `dashboardPageList`, `settingsPageList`, `informationalPageList`) for building navigation.
+
+## Assets
+Logos (`TinicornLogo`, 24 `CompanyLogo`s, 11 `PressLogo`s), device mockups (`ScreenMockup`, `IPhoneMockup`, `MacbookMockup`),
+backgrounds (`SectionBackgroundPattern`, `BackgroundPatternDecorative`, `BackgroundMask`, `BackgroundOverlay`, `LinePattern`),
+hand-drawn decorations (arrows, underlines, accents, scribbles), `VideoPlayer`, `PlayButton`, `CreditCardMockup`, `AppStoreBadge`,
+`RichTextEditor` + `WysiwygToolbar` — all vector art exported from the Figma file.
+
+## Known simplifications
+* Photos/screenshots are bitmaps inside the `.fig` and aren't bundled: every image slot takes a `src` prop and shows a gradient placeholder by default; avatars fall back to initials.
+* Some vector illustrations (maps, abstract shapes, empty-state illustrations) are simplified redraws. Chart data on the example pages is generated to match the Figma shapes.
+* Where Figma copy was hidden inside instances, sensible placeholder text was used. "Untitled" placeholder brand text was replaced with "Tinicorn"; the `TinicornLogo` wordmark defaults to `TINICORN` — pass `wordmark` to change it.
+* Popovers (Select, DatePicker, Tooltip) don't do collision detection. Values that were inconsistent between Figma variants were normalised.
+* Icons live in a separate entry (`@tinicorn/ui/icons`) because some icon names match component names (`Calendar`, `Table`).
+
+## Regenerating from Figma
+The `scripts/figma/` folder contains the decoder used to read the `.fig` file (kiwi format), dump component specs and
+export icons — see `scripts/figma/README.md`.
